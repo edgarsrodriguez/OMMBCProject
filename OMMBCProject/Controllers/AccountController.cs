@@ -416,8 +416,8 @@ namespace OMMBCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //return RedirectToAction("Index", "Home");
 
             FederatedAuthentication.SessionAuthenticationModule.SignOut();
 
@@ -428,7 +428,7 @@ namespace OMMBCProject.Controllers
                 ConfigurationManager.AppSettings["auth0:Domain"],
                 this.Server.UrlEncode(returnTo)));
 
-            
+
         }
 
         //
