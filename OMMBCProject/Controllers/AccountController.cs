@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OMMBCProject.Models;
+using System.Configuration;
+using System.IdentityModel.Services;
+using Auth0.AuthenticationApi.Models;
+using Auth0.AuthenticationApi;
 
 namespace OMMBCProject.Controllers
 {
@@ -57,8 +61,29 @@ namespace OMMBCProject.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            var client = new AuthenticationApiClient(
+            new Uri(string.Format("https://{0}", ConfigurationManager.AppSettings["auth0:Domain"])));
+
+            var request = this.Request;
+            var redirectUri = new UriBuilder(request.Url.Scheme, request.Url.Host, this.Request.Url.IsDefaultPort ? -1 : request.Url.Port, "LoginCallback.ashx");
+
+            var authorizeUrlBuilder = client.BuildAuthorizationUrl()
+                .WithClient(ConfigurationManager.AppSettings["auth0:ClientId"])
+                .WithRedirectUrl(redirectUri.ToString())
+                .WithResponseType(AuthorizationResponseType.Code)
+                .WithScope("openid profile")
+                .WithAudience("https://" + @ConfigurationManager.AppSettings["auth0:Domain"] + "/userinfo");
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                var state = "ru=" + HttpUtility.UrlEncode(returnUrl);
+                authorizeUrlBuilder.WithState(state);
+            }
+
+            return new RedirectResult(authorizeUrlBuilder.Build().ToString());
+
+            //ViewBag.ReturnUrl = returnUrl;
+            //return View();
         }
 
         //
@@ -393,6 +418,17 @@ namespace OMMBCProject.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+
+            FederatedAuthentication.SessionAuthenticationModule.SignOut();
+
+            var returnTo = Url.Action("Index", "Home", null, protocol: Request.Url.Scheme);
+            return this.Redirect(
+              string.Format(CultureInfo.InvariantCulture,
+                "https://{0}/v2/logout?returnTo={1}",
+                ConfigurationManager.AppSettings["auth0:Domain"],
+                this.Server.UrlEncode(returnTo)));
+
+            
         }
 
         //

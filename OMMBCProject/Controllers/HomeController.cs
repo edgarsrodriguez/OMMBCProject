@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,6 +11,7 @@ namespace OMMBCProject.Controllers
     {
         public ActionResult Index()
         {
+            string name = ClaimsPrincipal.Current.FindFirst("name")?.Value;
             return View();
         }
 
