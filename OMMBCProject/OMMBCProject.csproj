@@ -78,6 +78,8 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -207,6 +209,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OMMBCController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -215,8 +218,56 @@
       <DependentUpon>LoginCallback.ashx</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Area.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Group.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GroupStudent.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Problem.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProblemAnswer.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProblemSolution.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QuestionBankDBModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionBankDBModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QuestionBankDBModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OMMBCsqlDBModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OMMBCsqlDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentLevel.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Topic.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tutor.cs">
+      <DependentUpon>QuestionBankDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -227,9 +278,26 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\QuestionBankDBModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>OMMBCsqlDBModel.edmx</DependentUpon>
+      <LastGenOutput>QuestionBankDBModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\QuestionBankDBModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>OMMBCsqlDBModel.edmx</DependentUpon>
+      <LastGenOutput>QuestionBankDBModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="LoginCallback.ashx" />
+    <EntityDeploy Include="Models\OMMBCsqlDBModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OMMBCsqlDBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\OMMBCsqlDBModel.edmx.diagram">
+      <DependentUpon>OMMBCsqlDBModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -276,9 +344,12 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\ViewQuestionBank.cshtml" />
+    <Content Include="Views\OMMBC\QuestionBank.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -287,6 +358,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
